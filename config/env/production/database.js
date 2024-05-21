@@ -1,5 +1,3 @@
-const { Connection } = require("pg");
-
 module.exports = ({ env }) => ({
   connection: {
     client: "postgres",
@@ -9,7 +7,7 @@ module.exports = ({ env }) => ({
       database: env("PGDATABASE", "strapi"),
       user: env("PGUSER", "strapi"),
       password: env("PGPASSWORD", "password"),
-      ssl: env.bool("PGSSLEnabled", true),
+      ssl: env.bool(true),
     },
     pool: { min: 0 },
   },

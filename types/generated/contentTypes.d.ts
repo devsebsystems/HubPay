@@ -362,6 +362,137 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiPaymentPayment extends Schema.CollectionType {
+  collectionName: 'payments';
+  info: {
+    singularName: 'payment';
+    pluralName: 'payments';
+    displayName: 'Payment';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    amount: Attribute.Decimal;
+    status: Attribute.Enumeration<['pending', 'completed', 'failed']>;
+    supplier: Attribute.Relation<
+      'api::payment.payment',
+      'manyToOne',
+      'api::supplier.supplier'
+    >;
+    tenant: Attribute.Relation<
+      'api::payment.payment',
+      'manyToOne',
+      'api::tenant.tenant'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::payment.payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::payment.payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiProductProduct extends Schema.CollectionType {
+  collectionName: 'products';
+  info: {
+    singularName: 'product';
+    pluralName: 'products';
+    displayName: 'Product';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    item_number: Attribute.String;
+    description: Attribute.String;
+    long_description: Attribute.Text;
+    tenant: Attribute.Relation<
+      'api::product.product',
+      'manyToOne',
+      'api::tenant.tenant'
+    >;
+    supplier: Attribute.Relation<
+      'api::product.product',
+      'manyToOne',
+      'api::supplier.supplier'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSupplierSupplier extends Schema.CollectionType {
+  collectionName: 'suppliers';
+  info: {
+    singularName: 'supplier';
+    pluralName: 'suppliers';
+    displayName: 'Supplier';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    contact: Attribute.String;
+    accountDetails: Attribute.String;
+    tenant: Attribute.Relation<
+      'api::supplier.supplier',
+      'manyToOne',
+      'api::tenant.tenant'
+    >;
+    products: Attribute.Relation<
+      'api::supplier.supplier',
+      'oneToMany',
+      'api::product.product'
+    >;
+    payments: Attribute.Relation<
+      'api::supplier.supplier',
+      'oneToMany',
+      'api::payment.payment'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::supplier.supplier',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::supplier.supplier',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTenantTenant extends Schema.CollectionType {
   collectionName: 'tenants';
   info: {
@@ -378,6 +509,21 @@ export interface ApiTenantTenant extends Schema.CollectionType {
       'api::tenant.tenant',
       'oneToMany',
       'plugin::users-permissions.user'
+    >;
+    suppliers: Attribute.Relation<
+      'api::tenant.tenant',
+      'oneToMany',
+      'api::supplier.supplier'
+    >;
+    products: Attribute.Relation<
+      'api::tenant.tenant',
+      'oneToMany',
+      'api::product.product'
+    >;
+    payments: Attribute.Relation<
+      'api::tenant.tenant',
+      'oneToMany',
+      'api::payment.payment'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -837,6 +983,9 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::payment.payment': ApiPaymentPayment;
+      'api::product.product': ApiProductProduct;
+      'api::supplier.supplier': ApiSupplierSupplier;
       'api::tenant.tenant': ApiTenantTenant;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;

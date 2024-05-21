@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "tenants",
+  "collectionName": "suppliers",
   "info": {
-    "singularName": "tenant",
-    "pluralName": "tenants",
-    "displayName": "Tenant"
+    "singularName": "supplier",
+    "pluralName": "suppliers",
+    "displayName": "Supplier"
   },
   "options": {
     "draftAndPublish": true
@@ -14,29 +14,29 @@
     "name": {
       "type": "string"
     },
-    "users": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "tenant"
+    "contact": {
+      "type": "string"
     },
-    "suppliers": {
+    "accountDetails": {
+      "type": "string"
+    },
+    "tenant": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::supplier.supplier",
-      "mappedBy": "tenant"
+      "relation": "manyToOne",
+      "target": "api::tenant.tenant",
+      "inversedBy": "suppliers"
     },
     "products": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product",
-      "mappedBy": "tenant"
+      "mappedBy": "supplier"
     },
     "payments": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::payment.payment",
-      "mappedBy": "tenant"
+      "mappedBy": "supplier"
     }
   }
 }
